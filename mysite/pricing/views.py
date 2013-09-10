@@ -37,6 +37,8 @@ def detail(request):
     title = request.GET['7']
     
     prices = []
+    count = 0
+    total_price = 0
     prices.append(('Title', title.strip()))
     for u in [url1, url2, url3, url4, url5, url6]:
         try:
@@ -47,7 +49,10 @@ def detail(request):
                 price = parsed_src.xpath("//span[@class='price']/text()")
 #                price = re.findall('<span id="sp_price" class="total-value">(.*?)</', src)
                 if price:
-                    prices.append(('ncchomelearning.co.uk', price[0].replace('Now:','').strip()))
+#                    count = count+1
+                    ncc_price = price[0].replace('Now:','').strip().replace(u'\xa3','')
+                    prices.append(('ncchomelearning.co.uk', ncc_price))
+#                    total_price = float(ncc_price)
                 else:
                     prices.append(u)
             if 'mydistance-learning' in u:
@@ -55,7 +60,10 @@ def detail(request):
                 price = parsed_src.xpath("//span[@class='price']/text()")
 #                price = re.findall('<span id="sp_price" class="total-value">(.*?)</', src)
                 if price:
-                    prices.append(('mydistance-learning-college.com', price[0]))
+                    count = count+1
+                    mydis_price = price[0].replace(u'\xa3','').strip()
+                    prices.append(('mydistance-learning-college.com', mydis_price))
+                    total_price = total_price + float(mydis_price)
                 else:
                     prices.append(u)
             elif 'distance-learning-centre.' in u:
@@ -63,7 +71,10 @@ def detail(request):
                 price = parsed_src.xpath("//span[@class='price']/text()")
 #                price = re.findall('<span class="price">(.*?)</', src)
                 if price:
-                    prices.append(('distance-learning-centre.co.uk', price[0]))
+                    count = count+1
+                    dis_learn_centre_price = price[0].replace(u'\xa3','')
+                    prices.append(('distance-learning-centre.co.uk', dis_learn_centre_price))
+                    total_price = total_price + float(dis_learn_centre_price)
                 else:
                     prices.append(u)
             elif 'openstudycollege' in u:
@@ -71,7 +82,10 @@ def detail(request):
                 price = parsed_src.xpath("//span[@id='fullpaymentprice']/text()")
 #                price = re.findall('<span id="fullpaymentprice">(.*?)</', src)
                 if price:
-                    prices.append(('openstudycollege.com', price[0]))
+                    count = count+1
+                    openstudycollege_price = price[0].replace(u'\xa3','')
+                    prices.append(('openstudycollege.com', openstudycollege_price))
+                    total_price = total_price + float(openstudycollege_price)
                 else:
                     prices.append(u)
             elif 'ukopencollege' in u:
@@ -79,7 +93,10 @@ def detail(request):
                 price = parsed_src.xpath("//option[contains(text(),'Pay in Full')]/text()")
 #                price = re.findall('Pay in Full (.*?)</', src)
                 if price:
-                    prices.append(('ukopencollege.co.uk', price[0].rsplit(' ',1)[-1]))
+                    count = count+1
+                    ukopencollege_price = price[0].rsplit(' ',1)[-1].replace(u'\xa3','')
+                    prices.append(('ukopencollege.co.uk', ukopencollege_price))
+                    total_price = total_price + float(ukopencollege_price)
                 else:
                     prices.append(u)
             elif 'edistancelearning' in u:
@@ -87,11 +104,16 @@ def detail(request):
                 price = parsed_src.xpath("//td[contains(text(),'Enrolment Fee')]/following-sibling::td[1]/text()")
 #                price = re.findall('<td class="bodytext">(.*?)</', src)
                 if price:
-                    prices.append(('edistancelearning.co.uk', price[0]))
+                    count = count+1
+                    edistancelearning_price = price[0].replace(u'\xa3','')
+                    prices.append(('edistancelearning.co.uk', edistancelearning_price))
+                    total_price = total_price + float(edistancelearning_price)
                 else:
                     prices.append(u)
         except ValueError, e:
             prices.append("Not a valid URL")
+    average_price = float(float(total_price)/count)
+    prices.append(('Average Price', average_price))
     context = {'results': prices}
     return render_to_response('pricing/index.html', context,
                                                     context_instance=RequestContext(request))# Create your views here.

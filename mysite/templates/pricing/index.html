@@ -4,7 +4,7 @@
 </head>
 <body>
 <form action="/pricing/details/" method="GET">
-<table border='1'>
+<table border='0'>
 <tr>
 <td align="left">Title</div>
 <td align="center" width='200px'><input type='text' value='' id='7' name='7' size="100"></div>
@@ -42,7 +42,11 @@
 	<table border = '1'>
 	    {% for u in results %}
 	    <tr>
-			<th>{{ u.0 }} </th><td>{{ u.1 }} </td>
+	    	{% if u.0 == 'Title' %}
+				<th>{{ u.0 }} </th><td>{{ u.1 }}</td>
+			{% else %}
+				<th>{{ u.0 }} </th><td>&pound;{{ u.1 }}</td>
+			{% endif %}
 		</tr>
 	    {% endfor %}
 	    
