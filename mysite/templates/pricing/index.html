@@ -7,7 +7,7 @@
 <table border='1'>
 <tr>
 <td align="left">Title</div>
-<td align="center" width='200px'><input type='text' value='' size="100"></div>
+<td align="center" width='200px'><input type='text' value='' id='7' name='7' size="100"></div>
 </tr>
 <tr>
 <td align="left">Enter URL for <a href="http://www.ncchomelearning.co.uk/">ncchomelearning.co.uk</a></div>
@@ -39,13 +39,15 @@
 
 <div>
 	{% if results %}
-	<ul>
+	<table border = '1'>
 	    {% for u in results %}
-			<li>{{ u }} </li>
+	    <tr>
+			<th>{{ u.0 }} </th><td>{{ u.1 }} </td>
+		</tr>
 	    {% endfor %}
-    </ul>
+	    
+    </table>
     {% endif %}
 </div>
-
 </body>
 </html>

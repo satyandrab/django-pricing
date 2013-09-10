@@ -34,8 +34,10 @@ def detail(request):
     url4 = request.GET['4']
     url5 = request.GET['5']
     url6 = request.GET['6']
+    title = request.GET['7']
     
     prices = []
+    prices.append(('Title', title.strip()))
     for u in [url1, url2, url3, url4, url5, url6]:
         try:
             op = urllib2.urlopen(u)
@@ -45,7 +47,7 @@ def detail(request):
                 price = parsed_src.xpath("//span[@class='price']/text()")
 #                price = re.findall('<span id="sp_price" class="total-value">(.*?)</', src)
                 if price:
-                    prices.append(price[0].replace('Now:','').strip())
+                    prices.append(('ncchomelearning.co.uk', price[0].replace('Now:','').strip()))
                 else:
                     prices.append(u)
             if 'mydistance-learning' in u:
@@ -53,7 +55,7 @@ def detail(request):
                 price = parsed_src.xpath("//span[@class='price']/text()")
 #                price = re.findall('<span id="sp_price" class="total-value">(.*?)</', src)
                 if price:
-                    prices.append(price[0])
+                    prices.append(('mydistance-learning-college.com', price[0]))
                 else:
                     prices.append(u)
             elif 'distance-learning-centre.' in u:
@@ -61,7 +63,7 @@ def detail(request):
                 price = parsed_src.xpath("//span[@class='price']/text()")
 #                price = re.findall('<span class="price">(.*?)</', src)
                 if price:
-                    prices.append(price[0])
+                    prices.append(('distance-learning-centre.co.uk', price[0]))
                 else:
                     prices.append(u)
             elif 'openstudycollege' in u:
@@ -69,7 +71,7 @@ def detail(request):
                 price = parsed_src.xpath("//span[@id='fullpaymentprice']/text()")
 #                price = re.findall('<span id="fullpaymentprice">(.*?)</', src)
                 if price:
-                    prices.append(price[0])
+                    prices.append(('openstudycollege.com', price[0]))
                 else:
                     prices.append(u)
             elif 'ukopencollege' in u:
@@ -77,7 +79,7 @@ def detail(request):
                 price = parsed_src.xpath("//option[contains(text(),'Pay in Full')]/text()")
 #                price = re.findall('Pay in Full (.*?)</', src)
                 if price:
-                    prices.append(price[0].rsplit(' ',1)[-1])
+                    prices.append(('ukopencollege.co.uk', price[0].rsplit(' ',1)[-1]))
                 else:
                     prices.append(u)
             elif 'edistancelearning' in u:
@@ -85,7 +87,7 @@ def detail(request):
                 price = parsed_src.xpath("//td[contains(text(),'Enrolment Fee')]/following-sibling::td[1]/text()")
 #                price = re.findall('<td class="bodytext">(.*?)</', src)
                 if price:
-                    prices.append(price[0])
+                    prices.append(('edistancelearning.co.uk', price[0]))
                 else:
                     prices.append(u)
         except ValueError, e:
