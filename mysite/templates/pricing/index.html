@@ -1,0 +1,47 @@
+<html>
+<head>
+<title> Form Submission</title>
+</head>
+<body>
+<form action="/pricing/details/" method="GET">
+<table border='1'>
+<tr>
+<td align="left">Title</div>
+<td align="center" width='200px'><input type='text' value='' size="100"></div>
+</tr>
+<tr>
+<td align="left">Enter URL for <a href="http://mydistance-learning-college.com/">mydistance-learning-college.com</a></div>
+<td align="center"><input type='text' value='' id='1' name='1' size="100"></div>
+</tr>
+<tr>
+<td align="left">Enter URL for <a href="http://www.distance-learning-centre.co.uk/">distance-learning-centre.co.uk/</a></div>
+<td align="center"><input type='text' value='' id='2' name='2' size="100"></div>
+</tr>
+<tr>
+<td align="left">Enter URL for <a href="http://www.openstudycollege.com/">openstudycollege.com</a></div>
+<td align="center"><input type='text' value='' id='3' name='3' size="100"></div>
+</tr>
+<tr>
+<td align="left">Enter URL for <a href="http://www.ukopencollege.co.uk/">ukopencollege.co.uk</a></div>
+<td align="center"><input type='text' value='' id='4' name='4' size="100"></div>
+</tr>
+<tr>
+<td align="left">Enter URL for <a href="http://www.edistancelearning.co.uk/">edistancelearning.co.uk</a></div>
+<td align="center"><input type='text' value='' id='5' name='5' size="100"></div>
+</tr>
+</table>
+<input type="submit" value='Get Data'>
+</form>
+
+<div>
+	{% if results %}
+	<ul>
+	    {% for u in results %}
+			<li>{{ u }} </li>
+	    {% endfor %}
+    </ul>
+    {% endif %}
+</div>
+
+</body>
+</html>
