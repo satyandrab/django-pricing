@@ -33,12 +33,21 @@ def detail(request):
     url3 = request.GET['3']
     url4 = request.GET['4']
     url5 = request.GET['5']
+    url6 = request.GET['6']
     
     prices = []
-    for u in [url1, url2, url3, url4, url5]:
+    for u in [url1, url2, url3, url4, url5, url6]:
         try:
             op = urllib2.urlopen(u)
             src = op.read()
+            if 'ncchomelearning.co.uk' in u:
+                parsed_src = html.fromstring(src)
+                price = parsed_src.xpath("//span[@class='price']/text()")
+#                price = re.findall('<span id="sp_price" class="total-value">(.*?)</', src)
+                if price:
+                    prices.append(price[0].replace('Now:','').strip())
+                else:
+                    prices.append(u)
             if 'mydistance-learning' in u:
                 parsed_src = html.fromstring(src)
                 price = parsed_src.xpath("//span[@class='price']/text()")
