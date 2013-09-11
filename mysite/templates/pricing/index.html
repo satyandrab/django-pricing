@@ -11,32 +11,33 @@
 </tr>
 <tr>
 <td align="left">Enter URL for <a href="http://www.ncchomelearning.co.uk/">ncchomelearning.co.uk</a></td>
-<td align="center"><input type='text' value='' id='6' name='6' size="100"></td>
-</tr>
-<tr>
-<td align="left">Enter URL for <a href="http://mydistance-learning-college.com/">mydistance-learning-college.com</a></td>
 <td align="center"><input type='text' value='' id='1' name='1' size="100"></td>
 </tr>
 <tr>
-<td align="left">Enter URL for <a href="http://www.distance-learning-centre.co.uk/">distance-learning-centre.co.uk/</a></td>
+<td align="left">Enter URL for <a href="http://mydistance-learning-college.com/">mydistance-learning-college.com</a></td>
 <td align="center"><input type='text' value='' id='2' name='2' size="100"></td>
 </tr>
 <tr>
-<td align="left">Enter URL for <a href="http://www.openstudycollege.com/">openstudycollege.com</a></td>
+<td align="left">Enter URL for <a href="http://www.distance-learning-centre.co.uk/">distance-learning-centre.co.uk/</a></td>
 <td align="center"><input type='text' value='' id='3' name='3' size="100"></td>
 </tr>
 <tr>
-<td align="left">Enter URL for <a href="http://www.ukopencollege.co.uk/">ukopencollege.co.uk</a></td>
+<td align="left">Enter URL for <a href="http://www.openstudycollege.com/">openstudycollege.com</a></td>
 <td align="center"><input type='text' value='' id='4' name='4' size="100"></td>
 </tr>
 <tr>
-<td align="left">Enter URL for <a href="http://www.edistancelearning.co.uk/">edistancelearning.co.uk</a></td>
+<td align="left">Enter URL for <a href="http://www.ukopencollege.co.uk/">ukopencollege.co.uk</a></td>
 <td align="center"><input type='text' value='' id='5' name='5' size="100"></td>
+</tr>
+<tr>
+<td align="left">Enter URL for <a href="http://www.edistancelearning.co.uk/">edistancelearning.co.uk</a></td>
+<td align="center"><input type='text' value='' id='6' name='6' size="100"></td>
 </tr>
 </table>
 <input type="submit" value='Get & save data'>
 </form>
 
+<form action="/pricing/export" method='GET'>
 
 <div>
 	{% if results %}
@@ -44,15 +45,20 @@
 	    {% for u in results %}
 	    <tr>
 	    	{% if u.0 == 'Title' %}
+	    		<input type='hidden' id='title_unique' name='title_unique' value="{{ u.1 }}">
 				<th>{{ u.0 }} </th><td>{{ u.1 }}</td>
 			{% else %}
-				<th>{{ u.0 }} </th><td>&pound;{{ u.1 }}</td><td>{{ u.2 }}</td>
+				<th>{{ u.0 }} </th><td>&pound;{{ u.1 }}</td>
 			{% endif %}
 		</tr>
 	    {% endfor %}
     </table>
+    <input type="submit" value='Export Above Data'>
     {% endif %}
 </div>
+
+
+</form>
 <div>
 <a href = "/pricing/list">Complete product list</a></div>
 {% if query_data %}

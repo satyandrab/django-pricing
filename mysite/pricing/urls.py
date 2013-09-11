@@ -8,6 +8,7 @@ urlpatterns = patterns('pricing.views',
                        url(r'^$', 'index'),
                        url(r'^details/$', 'detail'),
                        url(r'^list/$', 'list'),
+                       url(r'^export/$', 'export'),
     # Examples:
     # url(r'^$', 'mysite.views.home', name='home'),
     # url(r'^mysite/', include('mysite.foo.urls')),
