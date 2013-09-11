@@ -34,7 +34,7 @@
 <td align="center"><input type='text' value='' id='5' name='5' size="100"></td>
 </tr>
 </table>
-<input type="submit" value='Get Data'>
+<input type="submit" value='Get & save data'>
 </form>
 
 
@@ -50,9 +50,36 @@
 			{% endif %}
 		</tr>
 	    {% endfor %}
-	    
     </table>
     {% endif %}
 </div>
+<div>
+<a href = "/pricing/list">Complete product list</a></div>
+{% if query_data %}
+	<table border = '1'>
+	<tr>
+			<td>Title</td>
+			<td>ncchomelearning.co.uk</td>
+			<td>mydistance-learning-college.com</td>
+			<td>distance-learning-centre.co.uk</td>
+			<td>openstudycollege.com</td>
+			<td>ukopencollege.co.uk</td>
+			<td>edistancelearning.co.uk</td>
+			<td>Average competitor Price</td>
+		</tr>
+	    {% for u in query_data %}
+	    <tr>
+			<td>{{ u.title }}</td>
+			<td>{{ u.ncchomelearning_price }}</td>
+			<td>{{ u.mydistance_learning_college_price }}</td>
+			<td>{{ u.distance_learning_centre_price }}</td>
+			<td>{{ u.openstudycollege_price }}</td>
+			<td>{{ u.ukopencollege_price }}</td>
+			<td>{{ u.edistancelearning_price }}</td>
+			<td>{{ u.avg_comp_price }}</td>
+		</tr>
+	    {% endfor %}
+    </table>
+{% endif %}
 </body>
 </html>

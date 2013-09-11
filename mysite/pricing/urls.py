@@ -7,6 +7,7 @@ from django.conf.urls.defaults import patterns, url
 urlpatterns = patterns('pricing.views',
                        url(r'^$', 'index'),
                        url(r'^details/$', 'detail'),
+                       url(r'^list/$', 'list'),
     # Examples:
     # url(r'^$', 'mysite.views.home', name='home'),
     # url(r'^mysite/', include('mysite.foo.urls')),
