@@ -11,6 +11,7 @@ from django.core.context_processors import csrf
 from xlwt import Workbook
 from xlwt import easyxf
 import xlwt
+import datetime
 
 def index(request):
 #     latest_poll_list = Poll.objects.order_by('-pub_date')[:5]
@@ -34,14 +35,14 @@ def export(request):
     sheet1 = book.add_sheet('Sheet 1')
     book.add_sheet('Sheet 2')
     
-    header = ['S. No','ncchomelearning.co.uk','mydistance-learning-college.com',
+    header = ['Title','ncchomelearning.co.uk','mydistance-learning-college.com',
               'distance-learning-centre.co.uk','openstudycollege.com',
-              'ukopencollege.co.uk','edistancelearning.co.uk']
-    for i in range(7):
+              'ukopencollege.co.uk','edistancelearning.co.uk','Competitor Avg. price']
+    for i in range(8):
         sheet1.write(0, i, header[i], xlwt.easyxf('borders: left thin, right thin, top thin, bottom thin;'))
     
     sheet1.write(1, 0, title_export.title)
-    sheet1.write(1, 1, '&pound;'+title_export.ncchomelearning_price)
+    sheet1.write(1, 1, u'£'+title_export.ncchomelearning_price)
     
     style_less = xlwt.easyxf('pattern: pattern solid, fore_colour rose;'
                              'alignment: horiz center;'
@@ -53,40 +54,43 @@ def export(request):
 
     
     if float(title_export.ncchomelearning_price) < float(title_export.mydistance_learning_college_price):
-        sheet1.write(1, 2, title_export.mydistance_learning_college_price, style_more)
+        sheet1.write(1, 2, u'£'+title_export.mydistance_learning_college_price, style_more)
     else:
-        sheet1.write(1, 2, title_export.mydistance_learning_college_price, style_less)
+        sheet1.write(1, 2, u'£'+title_export.mydistance_learning_college_price, style_less)
     
     if float(title_export.ncchomelearning_price) < float(title_export.distance_learning_centre_price):
-        sheet1.write(1, 3, title_export.distance_learning_centre_price, style_more)
+        sheet1.write(1, 3, u'£'+title_export.distance_learning_centre_price, style_more)
     else:
-        sheet1.write(1, 3, title_export.distance_learning_centre_price, style_less)
+        sheet1.write(1, 3, u'£'+title_export.distance_learning_centre_price, style_less)
     
     if float(title_export.ncchomelearning_price) < float(title_export.openstudycollege_price):
-        sheet1.write(1, 4, title_export.openstudycollege_price, style_more)
+        sheet1.write(1, 4, u'£'+title_export.openstudycollege_price, style_more)
     else:
-        sheet1.write(1, 4, title_export.openstudycollege_price, style_less)
+        sheet1.write(1, 4, u'£'+title_export.openstudycollege_price, style_less)
     
     if float(title_export.ncchomelearning_price) < float(title_export.ukopencollege_price):
-        sheet1.write(1, 5, title_export.ukopencollege_price, style_more)
+        sheet1.write(1, 5, u'£'+title_export.ukopencollege_price, style_more)
     else:
-        sheet1.write(1, 5, title_export.ukopencollege_price, style_less)
+        sheet1.write(1, 5, u'£'+title_export.ukopencollege_price, style_less)
     
     if float(title_export.ncchomelearning_price) < float(title_export.edistancelearning_price):
-        sheet1.write(1, 6, title_export.edistancelearning_price, style_more)
+        sheet1.write(1, 6, u'£'+title_export.edistancelearning_price, style_more)
     else:
-        sheet1.write(1, 6, title_export.edistancelearning_price, style_less)
+        sheet1.write(1, 6, u'£'+title_export.edistancelearning_price, style_less)
+        
+    if float(title_export.ncchomelearning_price) < float(title_export.avg_comp_price):
+        sheet1.write(1, 7, u'£'+title_export.avg_comp_price, style_more)
+    else:
+        sheet1.write(1, 7, u'£'+title_export.avg_comp_price, style_less)
 #    for r in row(2):
-    for i in range(7):
+    for i in range(8):
         sheet1.col(i).width = 6000
     
     response = HttpResponse(mimetype='application/vnd.ms-excel')
-    response['Content-Disposition'] = 'attachment; filename=data.xls'
+    response['Content-Disposition'] = 'attachment; filename= Product '+datetime.datetime.now().strftime("%Y-%m-%d %H:%M")
     book.save(response)
     return response
     
-    
-
 
 def detail(request):
 #     try:
@@ -311,3 +315,71 @@ def list(request):
 
     return render_to_response('pricing/index.html', context,
                               context_instance=RequestContext(request))
+
+def exportlist(request):
+    
+    data_export = data.objects.all()
+    
+    book = Workbook(encoding='utf-8')
+    sheet1 = book.add_sheet('Sheet 1')
+    book.add_sheet('Sheet 2')
+    
+    header = ['Title','ncchomelearning.co.uk','mydistance-learning-college.com',
+              'distance-learning-centre.co.uk','openstudycollege.com',
+              'ukopencollege.co.uk','edistancelearning.co.uk', 'Competitor Avg. price']
+    for i in range(8):
+        sheet1.write(0, i, header[i], xlwt.easyxf('borders: left thin, right thin, top thin, bottom thin;'))
+    
+    count = 1
+    for title_export in data_export:
+        sheet1.write(count, 0, title_export.title)
+        sheet1.write(count, 1, u'£'+title_export.ncchomelearning_price)
+        
+        style_less = xlwt.easyxf('pattern: pattern solid, fore_colour rose;'
+                                 'alignment: horiz center;'
+                                  'borders: left thin, right thin, top thin, bottom thin;')
+        style_more = xlwt.easyxf('pattern: pattern solid, fore_colour light_green;'
+                                 'alignment: horiz center;'
+                                 'borders: left thin, right thin, top thin, bottom thin;')
+    #    shring_to_fit_false = shrink_to_fit:False
+    
+        
+        if float(title_export.ncchomelearning_price) < float(title_export.mydistance_learning_college_price):
+            sheet1.write(count, 2, u'£'+title_export.mydistance_learning_college_price, style_more)
+        else:
+            sheet1.write(count, 2, u'£'+title_export.mydistance_learning_college_price, style_less)
+        
+        if float(title_export.ncchomelearning_price) < float(title_export.distance_learning_centre_price):
+            sheet1.write(count, 3, u'£'+title_export.distance_learning_centre_price, style_more)
+        else:
+            sheet1.write(count, 3, u'£'+title_export.distance_learning_centre_price, style_less)
+        
+        if float(title_export.ncchomelearning_price) < float(title_export.openstudycollege_price):
+            sheet1.write(count, 4, u'£'+title_export.openstudycollege_price, style_more)
+        else:
+            sheet1.write(count, 4, u'£'+title_export.openstudycollege_price, style_less)
+        
+        if float(title_export.ncchomelearning_price) < float(title_export.ukopencollege_price):
+            sheet1.write(count, 5, u'£'+title_export.ukopencollege_price, style_more)
+        else:
+            sheet1.write(count, 5, u'£'+title_export.ukopencollege_price, style_less)
+        
+        if float(title_export.ncchomelearning_price) < float(title_export.edistancelearning_price):
+            sheet1.write(count, 6, u'£'+title_export.edistancelearning_price, style_more)
+        else:
+            sheet1.write(count, 6, u'£'+title_export.edistancelearning_price, style_less)
+            
+        if float(title_export.ncchomelearning_price) < float(title_export.avg_comp_price):
+            sheet1.write(count, 7, u'£'+title_export.avg_comp_price, style_more)
+        else:
+            sheet1.write(count, 7, u'£'+title_export.avg_comp_price, style_less)
+    #    for r in row(2):
+        count = count+1
+        
+        for i in range(8):
+            sheet1.col(i).width = 6000
+        
+    response = HttpResponse(mimetype='application/vnd.ms-excel')
+    response['Content-Disposition'] = 'attachment; filename= Products list '+datetime.datetime.now().strftime("%Y-%m-%d %H:%M")
+    book.save(response)
+    return response
