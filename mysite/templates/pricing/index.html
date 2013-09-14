@@ -1,13 +1,33 @@
 <html>
 <head>
 <title> Form Submission</title>
+<script type='text/javascript'>
+window.onload = function() {
+	  document.getElementById("7").focus();
+	};
+	</script>
+<script type='text/javascript'>
+function check_blank(){
+	var title = document.getElementById("7").value;
+	//alert("1");
+	if (title.trim() === ""){
+		alert("Title can't be null");
+		document.getElementById("7").focus();
+		return false;
+		}
+	else{
+		return true;
+	}
+		
+	}
+</script>
 </head>
 <body>
-<form action="/pricing/details/" method="GET">
+<form action="/pricing/details/" method="GET" onsubmit="return check_blank();">
 <table border='0'>
 <tr>
 <td align="left">Title</td>
-<td align="center" width='200px'><input type='text' value='' id='7' name='7' size="100"></td>
+<td align="center" width='200px'><input type='text' value='' id='7' name='7' size="100" ></td>
 </tr>
 <tr>
 <td align="left">Enter URL for <a href="http://www.ncchomelearning.co.uk/">ncchomelearning.co.uk</a></td>
