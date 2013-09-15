@@ -11,6 +11,7 @@ urlpatterns = patterns('pricing.views',
                        url(r'^export/$', 'export'),
                        url(r'^exportlist/$', 'exportlist'),
                        url(r'^DeleteEntry/$', 'delete_entry'),
+                       url(r'^refresh/$', 'refresh'),
     # Examples:
     # url(r'^$', 'mysite.views.home', name='home'),
     # url(r'^mysite/', include('mysite.foo.urls')),

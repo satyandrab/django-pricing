@@ -18,6 +18,103 @@ def index(request):
 
     return render_to_response('pricing/index.html', context)
 
+def refresh(request):
+    entries = data.objects.all()
+    count = 0
+    total_price = 0.00
+    for entry in entries:
+        
+        u = entry.ncchomelearning_url
+        if u != '':
+            op = urllib2.urlopen(u)
+            src = op.read()
+            parsed_src = html.fromstring(src)
+            price = parsed_src.xpath("//span[@class='price']/text()")
+            if price:
+                ncc_price = price[0].replace('Now:','').strip().replace(u'\xa3','')
+                entry.ncchomelearning_price = ncc_price
+                count += 1
+                total_price += float(ncc_price)
+        
+        
+        u = entry.mydistance_learning_college_url
+        if u != '':
+            op = urllib2.urlopen(u)
+            src = op.read()
+            parsed_src = html.fromstring(src)
+            
+            deal_price = parsed_src.xpath("//div[@class='ourpricevalue']/span/text()")
+            if deal_price:
+                price = deal_price
+            else:
+                price = parsed_src.xpath("//span[@class='price']/text()")
+            if price:
+                count += 1
+                mydis_price = price[0].replace(u'\xa3','').strip()
+                total_price += float(mydis_price)
+                entry.mydistance_learning_college_price = mydis_price
+            
+        u = entry.distance_learning_centre_url
+        if u != '':
+            op = urllib2.urlopen(u)
+            src = op.read()
+            parsed_src = html.fromstring(src)
+            price = parsed_src.xpath("//span[@class='price']/text()")
+            if price:
+                count += 1
+                dis_learn_centre_price = price[0].replace(u'\xa3','')
+                total_price += float(dis_learn_centre_price)
+                entry.distance_learning_centre_price = dis_learn_centre_price
+        
+        u = entry.openstudycollege_url
+        if u != '':
+            op = urllib2.urlopen(u)
+            src = op.read()
+            parsed_src = html.fromstring(src)
+            
+            price = parsed_src.xpath("//span[@id='fullpaymentprice']/text()")
+            if price:
+                openstudycollege_price = price[0].replace(u'\xa3','')
+                entry.openstudycollege_price = openstudycollege_price
+                count += 1
+                total_price += float(openstudycollege_price)
+        
+        u = entry.ukopencollege_url
+        if u != '':
+            op = urllib2.urlopen(u)
+            src = op.read()
+            parsed_src = html.fromstring(src)
+            price = parsed_src.xpath("//option[contains(text(),'Pay in Full')]/text()")
+            if price:
+                ukopencollege_price = price[0].rsplit(' ',1)[-1].replace(u'\xa3','')
+                entry.ukopencollege_price = ukopencollege_price
+                count += 1
+                total_price += float(ukopencollege_price)
+        
+        u = entry.edistancelearning_url
+        if u != '':
+            op = urllib2.urlopen(u)
+            src = op.read()
+            parsed_src = html.fromstring(src)
+            price = parsed_src.xpath("//td[contains(text(),'Enrolment Fee')]/following-sibling::td[1]/text()")
+            if price:
+                edistancelearning_price = price[0].replace(u'\xa3','')
+                entry.edistancelearning_price = edistancelearning_price
+                count += 1
+                total_price += float(edistancelearning_price)
+        if count!=0:
+            entry.avg_comp_price = "%.2f" %(float(total_price/count))
+        else:
+            entry.avg_comp_price = "0.00"
+    
+        entry.save()
+    
+    result_saved = "All prices values have been refreshed."
+    context = {'result_saved': result_saved}
+    
+    return render_to_response('pricing/index.html', context,
+                              context_instance=RequestContext(request))
+
 def delete_entry(request):
     row_id = request.GET['id']
     entry = data.objects.get(pk=row_id)
@@ -264,11 +361,11 @@ def detail(request):
                 title_query.edistancelearning_url = ''
                 title_query.edistancelearning_price = ''
             if count != 0:
-                average_price = float(float(total_price)/count)
+                average_price = "%.2f" %float(total_price)/count
                 prices.append(('Average Price', average_price))
-	        title_query.avg_comp_price = average_price
+                title_query.avg_comp_price = average_price
             else:
-                average_price = 0
+                average_price = "0.00"
                 prices.append(('Average Price', average_price))
                 title_query.avg_comp_price = average_price
                 

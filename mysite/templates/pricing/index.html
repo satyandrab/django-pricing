@@ -36,6 +36,9 @@ function check_blank(){
 </script>
 </head>
 <body>
+{%if result_saved%}
+	<p style="color:red;"> {{result_saved}}</p>
+{%endif%}
 <form action="/pricing/details/" method="GET" onsubmit="return check_blank();">
 <table border='0'>
 <tr>
@@ -122,5 +125,9 @@ function check_blank(){
     </table>
 {% endif %}
 <a href = "/pricing/exportlist">Export Complete product list</a></div>
+<br>
+<a href = "/pricing/refresh">Refresh All Data</a></div>
+<br>
+
 </body>
 </html>
