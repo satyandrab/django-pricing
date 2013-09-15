@@ -254,6 +254,7 @@ def detail(request):
             if count != 0:
                 average_price = float(float(total_price)/count)
                 prices.append(('Average Price', average_price))
+	        title_query.avg_comp_price = average_price
             else:
                 average_price = 0
                 prices.append(('Average Price', average_price))
@@ -386,13 +387,15 @@ def detail(request):
         else:
             data_obj.edistancelearning_url = ''
             data_obj.edistancelearning_price = ''
+
         if count != 0:
             average_price = float(float(total_price)/count)
             prices.append(('Average Price', average_price))
+            data_obj.avg_comp_price = average_price
         else:
             average_price = 0
             prices.append(('Average Price', average_price))
-            title_query.avg_comp_price = average_price
+            data_obj.avg_comp_price = average_price
             
         obj = data_obj.save()
         
@@ -490,7 +493,7 @@ def exportlist(request):
         else:
             sheet1.write(count, 7, '', style_less)
 
-    count = count+1
+	count = count+1
         
     for i in range(8):
         sheet1.col(i).width = 6000
