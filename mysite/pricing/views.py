@@ -24,6 +24,11 @@ def delete_entry(request):
     
     entry.delete()
     list(request)
+    context = {'query_data': data.objects.all()}
+
+    return render_to_response('pricing/index.html', context,
+                              context_instance=RequestContext(request))
+
 
 def export(request):
     title = request.GET['title_unique']
