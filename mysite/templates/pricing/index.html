@@ -9,6 +9,12 @@ window.onload = function() {
 <script type='text/javascript'>
 function check_blank(){
 	var title = document.getElementById("7").value;
+	var url1 = document.getElementById("1").value;
+	var url2 = document.getElementById("2").value;
+	var url3 = document.getElementById("3").value;
+	var url4 = document.getElementById("4").value;
+	var url5 = document.getElementById("5").value;
+	var url6 = document.getElementById("6").value;
 	//alert("1");
 	if (title.trim() === ""){
 		alert("Title can't be null");
@@ -16,7 +22,14 @@ function check_blank(){
 		return false;
 		}
 	else{
-		return true;
+		if (url1.trim() === "" && url2.trim() === "" && url3.trim() === "" && url4.trim() === "" && url5.trim() === "" && url6.trim() === "") {
+			alert("All URLs cant be blank.");
+			document.getElementById("1").focus();
+			return false;
+			}
+		else{
+			return true;
+		}
 	}
 		
 	}
