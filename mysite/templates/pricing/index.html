@@ -116,6 +116,7 @@ function check_blank(){
 			<td>{{ u.ukopencollege_price }}</td>
 			<td>{{ u.edistancelearning_price }}</td>
 			<td>{{ u.avg_comp_price }}</td>
+			<td><a href="/pricing/DeleteEntry/?id={{u.pk}}">Delete</a></td>
 		</tr>
 	    {% endfor %}
     </table>

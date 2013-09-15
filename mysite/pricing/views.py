@@ -18,6 +18,13 @@ def index(request):
 
     return render_to_response('pricing/index.html', context)
 
+def delete_entry(request):
+    row_id = request.GET['id']
+    entry = data.objects.get(pk=row_id)
+    
+    entry.delete()
+    list(request)
+
 def export(request):
     title = request.GET['title_unique']
     
