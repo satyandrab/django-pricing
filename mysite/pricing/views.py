@@ -110,7 +110,8 @@ def refresh(request):
         entry.save()
     
     result_saved = "All prices values have been refreshed."
-    context = {'result_saved': result_saved}
+    context = {'result_saved': result_saved,
+               'query_data': data.objects.all()}
     
     return render_to_response('pricing/index.html', context,
                               context_instance=RequestContext(request))
