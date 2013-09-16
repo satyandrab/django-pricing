@@ -39,6 +39,7 @@ function check_blank(){
 {%if result_saved%}
 	<p style="color:red;"> {{result_saved}}</p>
 {%endif%}
+
 <form action="/pricing/details/" method="GET" onsubmit="return check_blank();">
 <table border='0'>
 <tr>

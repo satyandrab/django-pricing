@@ -20,9 +20,11 @@ def index(request):
 
 def refresh(request):
     entries = data.objects.all()
-    count = 0
-    total_price = 0.00
+    #count = 0
+    #total_price = 0.00
     for entry in entries:
+	count = 0
+	total_price = 0.00
         
         u = entry.ncchomelearning_url
         if u != '':
@@ -33,8 +35,8 @@ def refresh(request):
             if price:
                 ncc_price = price[0].replace('Now:','').strip().replace(u'\xa3','')
                 entry.ncchomelearning_price = ncc_price
-                count += 1
-                total_price += float(ncc_price)
+                #count += 1
+                #total_price += float(ncc_price)
         
         
         u = entry.mydistance_learning_college_url
@@ -105,7 +107,7 @@ def refresh(request):
                 count += 1
                 total_price += float(edistancelearning_price_actual)
         if count!=0:
-            entry.avg_comp_price = "%.2f" %(float(total_price/count))
+            entry.avg_comp_price = "%.2f"%(float(total_price)/count)
         else:
             entry.avg_comp_price = "0.00"
     
@@ -113,7 +115,9 @@ def refresh(request):
     
     result_saved = "All prices values have been refreshed."
     context = {'result_saved': result_saved,
-               'query_data': data.objects.all()}
+               'query_data': data.objects.all(),
+		'count':count,
+		'total_price':total_price}
     
     return render_to_response('pricing/index.html', context,
                               context_instance=RequestContext(request))
@@ -204,7 +208,7 @@ def export(request):
         sheet1.write(1, 6, u'£'+title_export.edistancelearning_price, style_less)
 
     if title_export.ncchomelearning_price.strip() != '':
-        if title_export.ncchomelearning_price.strip() !="" and title_export.mydistance_learning_college_price.strip() != "":
+        if title_export.ncchomelearning_price.strip() !="" and title_export.avg_comp_price.strip() != "":
             if float(title_export.ncchomelearning_price) <= float(title_export.avg_comp_price):
                 sheet1.write(1, 7, u'£'+title_export.avg_comp_price, style_more)
             else:
@@ -506,7 +510,7 @@ def detail(request):
             data_obj.edistancelearning_price = ''
 
         if count != 0:
-            average_price = float(float(total_price)/count)
+            average_price = "%.2f"%(float(float(total_price)/count))
             prices.append(('Average Price', average_price))
             data_obj.avg_comp_price = average_price
         else:
@@ -602,7 +606,7 @@ def exportlist(request):
             sheet1.write(count, 6, u'£'+title_export.edistancelearning_price, style_less)
     
         if title_export.ncchomelearning_price.strip() != '' and title_export.avg_comp_price != '':
-            if title_export.ncchomelearning_price.strip() !="" and title_export.mydistance_learning_college_price.strip() != "":
+            if title_export.ncchomelearning_price.strip() !="" and title_export.avg_comp_price.strip() != "":
                 if float(title_export.ncchomelearning_price) <= float(title_export.avg_comp_price):
                     sheet1.write(count, 7, u'£'+title_export.avg_comp_price, style_more)
                 else:
