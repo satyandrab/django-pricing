@@ -100,7 +100,7 @@ def refresh(request):
             parsed_src = html.fromstring(src)
             price = parsed_src.xpath("//td[contains(text(),'Enrolment Fee')]/following-sibling::td[1]/text()")
             if price:
-                edistancelearning_price = price[0].replace(u'\xa3','')
+                edistancelearning_price = price[0].replace(u'\xa3','').replace('inc VAT','')
                 edistancelearning_price_discounted = (float(edistancelearning_price)*20)/100
                 edistancelearning_price_actual = float(edistancelearning_price)-float(edistancelearning_price_discounted)
                 entry.edistancelearning_price = edistancelearning_price_actual
@@ -355,7 +355,7 @@ def detail(request):
                 price = parsed_src.xpath("//td[contains(text(),'Enrolment Fee')]/following-sibling::td[1]/text()")
                 if price:
                     count = count+1
-                    edistancelearning_price = price[0].replace(u'\xa3','')
+                    edistancelearning_price = price[0].replace(u'\xa3','').replace('inc VAT','')
                     edistancelearning_price_discounted = (float(edistancelearning_price)*20)/100
                     edistancelearning_price_actual = float(edistancelearning_price)-float(edistancelearning_price_discounted)
                     prices.append(('edistancelearning.co.uk', edistancelearning_price_actual))
@@ -494,7 +494,7 @@ def detail(request):
             price = parsed_src.xpath("//td[contains(text(),'Enrolment Fee')]/following-sibling::td[1]/text()")
             if price:
                 count = count+1
-                edistancelearning_price = price[0].replace(u'\xa3','')
+                edistancelearning_price = price[0].replace(u'\xa3','').replace('inc VAT','')
                 edistancelearning_price_discounted = (float(edistancelearning_price)*20)/100
                 edistancelearning_price_actual = float(edistancelearning_price)-float(edistancelearning_price_discounted)
                 prices.append(('edistancelearning.co.uk', edistancelearning_price_actual))
