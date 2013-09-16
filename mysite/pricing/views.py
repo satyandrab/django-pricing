@@ -99,9 +99,11 @@ def refresh(request):
             price = parsed_src.xpath("//td[contains(text(),'Enrolment Fee')]/following-sibling::td[1]/text()")
             if price:
                 edistancelearning_price = price[0].replace(u'\xa3','')
-                entry.edistancelearning_price = edistancelearning_price
+                edistancelearning_price_discounted = (float(edistancelearning_price)*20)/100
+                edistancelearning_price_actual = float(edistancelearning_price)-float(edistancelearning_price_discounted)
+                entry.edistancelearning_price = edistancelearning_price_actual
                 count += 1
-                total_price += float(edistancelearning_price)
+                total_price += float(edistancelearning_price_actual)
         if count!=0:
             entry.avg_comp_price = "%.2f" %(float(total_price/count))
         else:
