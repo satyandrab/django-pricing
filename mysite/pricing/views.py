@@ -158,7 +158,7 @@ def export(request):
                              'borders: left thin, right thin, top thin, bottom thin;')
     if title_export.ncchomelearning_price.strip() != '':
         if title_export.ncchomelearning_price.strip() !="" and title_export.mydistance_learning_college_price.strip() != "": 
-            if float(title_export.ncchomelearning_price) < float(title_export.mydistance_learning_college_price):
+            if float(title_export.ncchomelearning_price) <= float(title_export.mydistance_learning_college_price):
                 sheet1.write(1, 2, u'£'+title_export.mydistance_learning_college_price, style_more)
             else:
                 sheet1.write(1, 2, u'£'+title_export.mydistance_learning_college_price, style_less)
@@ -167,7 +167,7 @@ def export(request):
         
     if title_export.ncchomelearning_price.strip() != '':
         if title_export.ncchomelearning_price.strip() !="" and title_export.distance_learning_centre_price.strip() != "":
-            if float(title_export.ncchomelearning_price) < float(title_export.distance_learning_centre_price):
+            if float(title_export.ncchomelearning_price) <= float(title_export.distance_learning_centre_price):
                 sheet1.write(1, 3, u'£'+title_export.distance_learning_centre_price, style_more)
             else:
                 sheet1.write(1, 3, u'£'+title_export.distance_learning_centre_price, style_less)
@@ -176,7 +176,7 @@ def export(request):
     
     if title_export.ncchomelearning_price.strip() != '':
         if title_export.ncchomelearning_price.strip() !="" and title_export.openstudycollege_price.strip() != "":
-            if float(title_export.ncchomelearning_price) < float(title_export.openstudycollege_price):
+            if float(title_export.ncchomelearning_price) <= float(title_export.openstudycollege_price):
                 sheet1.write(1, 4, u'£'+title_export.openstudycollege_price, style_more)
             else:
                 sheet1.write(1, 4, u'£'+title_export.openstudycollege_price, style_less)
@@ -185,7 +185,7 @@ def export(request):
         
     if title_export.ncchomelearning_price.strip() != '':
         if title_export.ncchomelearning_price.strip() !="" and title_export.ukopencollege_price.strip() != "":
-            if float(title_export.ncchomelearning_price) < float(title_export.ukopencollege_price):
+            if float(title_export.ncchomelearning_price) <= float(title_export.ukopencollege_price):
                 sheet1.write(1, 5, u'£'+title_export.ukopencollege_price, style_more)
             else:
                 sheet1.write(1, 5, u'£'+title_export.ukopencollege_price, style_less)
@@ -194,7 +194,7 @@ def export(request):
     
     if title_export.ncchomelearning_price.strip() != '':
         if title_export.ncchomelearning_price.strip() !="" and title_export.edistancelearning_price.strip() != "":
-            if float(title_export.ncchomelearning_price) < float(title_export.edistancelearning_price):
+            if float(title_export.ncchomelearning_price) <= float(title_export.edistancelearning_price):
                 sheet1.write(1, 6, u'£'+title_export.edistancelearning_price, style_more)
             else:
                 sheet1.write(1, 6, u'£'+title_export.edistancelearning_price, style_less)
@@ -203,7 +203,7 @@ def export(request):
 
     if title_export.ncchomelearning_price.strip() != '':
         if title_export.ncchomelearning_price.strip() !="" and title_export.mydistance_learning_college_price.strip() != "":
-            if float(title_export.ncchomelearning_price) < float(title_export.avg_comp_price):
+            if float(title_export.ncchomelearning_price) <= float(title_export.avg_comp_price):
                 sheet1.write(1, 7, u'£'+title_export.avg_comp_price, style_more)
             else:
                 sheet1.write(1, 7, u'£'+title_export.avg_comp_price, style_less)
@@ -226,7 +226,7 @@ def detail(request):
     url3 = request.GET['3'] #distance-learning-centre
     url4 = request.GET['4'] #openstudycollege
     url5 = request.GET['5'] #ukopencollege
-    url6 = request.GET['6'] #edistancelearning
+    url6 = request.GET['6'].replace('/#/', '/') #edistancelearning
     title = request.GET['7']
     
     prices = []
@@ -362,7 +362,7 @@ def detail(request):
                 title_query.edistancelearning_url = ''
                 title_query.edistancelearning_price = ''
             if count != 0:
-                average_price = "%.2f" %float(total_price)/count
+                average_price = "%.2f"%(float(total_price)/count)
                 prices.append(('Average Price', average_price))
                 title_query.avg_comp_price = average_price
             else:
@@ -372,6 +372,7 @@ def detail(request):
                 
             obj = title_query.save()
     except:
+#        raise
         data_obj = data()
         data_obj.title = title
         if url1!= '':
@@ -483,6 +484,7 @@ def detail(request):
             src = op.read()
             parsed_src = html.fromstring(src)
             price = parsed_src.xpath("//td[contains(text(),'Enrolment Fee')]/following-sibling::td[1]/text()")
+            print price
             if price:
                 count = count+1
                 edistancelearning_price = price[0].replace(u'\xa3','')
@@ -551,7 +553,7 @@ def exportlist(request):
                                  'borders: left thin, right thin, top thin, bottom thin;')
         if title_export.ncchomelearning_price.strip() != '':
             if title_export.ncchomelearning_price.strip() !="" and title_export.mydistance_learning_college_price.strip() != "": 
-                if float(title_export.ncchomelearning_price) < float(title_export.mydistance_learning_college_price):
+                if float(title_export.ncchomelearning_price) <= float(title_export.mydistance_learning_college_price):
                     sheet1.write(count, 2, u'£'+title_export.mydistance_learning_college_price, style_more)
                 else:
                     sheet1.write(count, 2, u'£'+title_export.mydistance_learning_college_price, style_less)
@@ -560,7 +562,7 @@ def exportlist(request):
             
         if title_export.ncchomelearning_price.strip() != '':
             if title_export.ncchomelearning_price.strip() !="" and title_export.distance_learning_centre_price.strip() != "":
-                if float(title_export.ncchomelearning_price) < float(title_export.distance_learning_centre_price):
+                if float(title_export.ncchomelearning_price) <= float(title_export.distance_learning_centre_price):
                     sheet1.write(count, 3, u'£'+title_export.distance_learning_centre_price, style_more)
                 else:
                     sheet1.write(count, 3, u'£'+title_export.distance_learning_centre_price, style_less)
@@ -569,7 +571,7 @@ def exportlist(request):
         
         if title_export.ncchomelearning_price.strip() != '':
             if title_export.ncchomelearning_price.strip() !="" and title_export.openstudycollege_price.strip() != "":
-                if float(title_export.ncchomelearning_price) < float(title_export.openstudycollege_price):
+                if float(title_export.ncchomelearning_price) <= float(title_export.openstudycollege_price):
                     sheet1.write(count, 4, u'£'+title_export.openstudycollege_price, style_more)
                 else:
                     sheet1.write(count, 4, u'£'+title_export.openstudycollege_price, style_less)
@@ -578,7 +580,7 @@ def exportlist(request):
             
         if title_export.ncchomelearning_price.strip() != '':
             if title_export.ncchomelearning_price.strip() !="" and title_export.ukopencollege_price.strip() != "":
-                if float(title_export.ncchomelearning_price) < float(title_export.ukopencollege_price):
+                if float(title_export.ncchomelearning_price) <= float(title_export.ukopencollege_price):
                     sheet1.write(count, 5, u'£'+title_export.ukopencollege_price, style_more)
                 else:
                     sheet1.write(count, 5, u'£'+title_export.ukopencollege_price, style_less)
@@ -587,7 +589,7 @@ def exportlist(request):
         
         if title_export.ncchomelearning_price.strip() != '':
             if title_export.ncchomelearning_price.strip() !="" and title_export.edistancelearning_price.strip() != "":
-                if float(title_export.ncchomelearning_price) < float(title_export.edistancelearning_price):
+                if float(title_export.ncchomelearning_price) <= float(title_export.edistancelearning_price):
                     sheet1.write(count, 6, u'£'+title_export.edistancelearning_price, style_more)
                 else:
                     sheet1.write(count, 6, u'£'+title_export.edistancelearning_price, style_less)
@@ -596,7 +598,7 @@ def exportlist(request):
     
         if title_export.ncchomelearning_price.strip() != '' and title_export.avg_comp_price != '':
             if title_export.ncchomelearning_price.strip() !="" and title_export.mydistance_learning_college_price.strip() != "":
-                if float(title_export.ncchomelearning_price) < float(title_export.avg_comp_price):
+                if float(title_export.ncchomelearning_price) <= float(title_export.avg_comp_price):
                     sheet1.write(count, 7, u'£'+title_export.avg_comp_price, style_more)
                 else:
                     sheet1.write(count, 7, u'£'+title_export.avg_comp_price, style_less)
