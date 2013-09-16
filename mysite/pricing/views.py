@@ -350,10 +350,12 @@ def detail(request):
                 if price:
                     count = count+1
                     edistancelearning_price = price[0].replace(u'\xa3','')
-                    prices.append(('edistancelearning.co.uk', edistancelearning_price))
-                    total_price = total_price + float(edistancelearning_price)
+                    edistancelearning_price_discounted = (float(edistancelearning_price)*20)/100
+                    edistancelearning_price_actual = float(edistancelearning_price)-float(edistancelearning_price_discounted)
+                    prices.append(('edistancelearning.co.uk', edistancelearning_price_actual))
+                    total_price = total_price + float(edistancelearning_price_actual)
                     title_query.edistancelearning_url = url6
-                    title_query.edistancelearning_price = edistancelearning_price
+                    title_query.edistancelearning_price = edistancelearning_price_actual
                 else:
                     title_query.edistancelearning_url = url6
                     title_query.edistancelearning_price = ''
@@ -484,14 +486,15 @@ def detail(request):
             src = op.read()
             parsed_src = html.fromstring(src)
             price = parsed_src.xpath("//td[contains(text(),'Enrolment Fee')]/following-sibling::td[1]/text()")
-            print price
             if price:
                 count = count+1
                 edistancelearning_price = price[0].replace(u'\xa3','')
-                prices.append(('edistancelearning.co.uk', edistancelearning_price))
-                total_price = total_price + float(edistancelearning_price)
+                edistancelearning_price_discounted = (float(edistancelearning_price)*20)/100
+                edistancelearning_price_actual = float(edistancelearning_price)-float(edistancelearning_price_discounted)
+                prices.append(('edistancelearning.co.uk', edistancelearning_price_actual))
+                total_price = total_price + float(edistancelearning_price_actual)
                 data_obj.edistancelearning_url = url6
-                data_obj.edistancelearning_price = edistancelearning_price
+                data_obj.edistancelearning_price = edistancelearning_price_actual
             else:
                 data_obj.edistancelearning_url = url6
                 data_obj.edistancelearning_price = ''
